@@ -46,7 +46,7 @@ public sealed class TcpListenerService : BackgroundService
             while (!ct.IsCancellationRequested)
             {
                 ReadResult result = await pipeReader.ReadAsync(ct);
-                System.Console.WriteLine(result);
+
                 var buffer = result.Buffer;
 
                 //  SequencePosition consumed = buffer.Start;

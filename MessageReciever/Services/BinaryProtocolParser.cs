@@ -12,8 +12,8 @@ public static class BinaryProtocolParser
     {
         message = default!;
 
-        // Resynchronize to next 0xAA55 sync word (little-endian from BinaryWriter)
-        while (reader.Remaining >= 2 && !(reader.UnreadSpan[0] == 0x55 && reader.UnreadSpan[1] == 0xAA))
+        // Resynchronize to next 0xAA55 sync word (big-endian as per protocol spec)
+        while (reader.Remaining >= 2 && !(reader.UnreadSpan[0] == 0xAA && reader.UnreadSpan[1] == 0x55))
         {
             reader.Advance(1);
         }
@@ -21,7 +21,7 @@ public static class BinaryProtocolParser
         if (reader.Remaining < 11) // need at least header after sync
             return false;
 
-        reader.Advance(2); // consume sync word 0x55AA (little-endian)
+        reader.Advance(2); // consume sync word 0xAA55 (big-endian)
 
         // Read fixed 9-byte header safely and use BinaryReader
         Span<byte> header = stackalloc byte[9];
@@ -32,9 +32,9 @@ public static class BinaryProtocolParser
         using var binaryReader = new BinaryReader(headerStream);
 
         byte[] deviceId = binaryReader.ReadBytes(4);
-        ushort counter = BinaryPrimitives.ReadUInt16LittleEndian(binaryReader.ReadBytes(2));
+        ushort counter = BinaryPrimitives.ReadUInt16BigEndian(binaryReader.ReadBytes(2)); // Big Endian
         byte messageType = binaryReader.ReadByte();
-        ushort payloadLength = BinaryPrimitives.ReadUInt16LittleEndian(binaryReader.ReadBytes(2));
+        ushort payloadLength = BinaryPrimitives.ReadUInt16BigEndian(binaryReader.ReadBytes(2)); // Big Endian
 
         if (reader.Remaining < payloadLength)
         {

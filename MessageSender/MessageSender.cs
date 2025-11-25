@@ -13,11 +13,11 @@ class MessageSender
         using var stream = client.GetStream();
         using var writer = new BinaryWriter(stream);
 
-        writer.Write((ushort)0xAA55);
-        writer.Write(deviceId);
-        writer.Write(messageCounter);
+        writer.Write(BitConverter.GetBytes((ushort)0xAA55).Reverse().ToArray());
+        writer.Write(deviceId.Reverse().ToArray());
+        writer.Write(BitConverter.GetBytes(messageCounter).Reverse().ToArray());
         writer.Write(messageType);
-        writer.Write(payloadLength);
+        writer.Write(BitConverter.GetBytes(payloadLength).Reverse().ToArray());
         writer.Write(payload);
     }
 
