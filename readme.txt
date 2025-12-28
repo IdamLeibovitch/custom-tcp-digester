@@ -1,10 +1,6 @@
-The goal of this assignment is to design and implement a scalable,
+The goal was to design and implement a scalable,
 high-throughput microservice in C#/.NET that ingests data from custom TCP streams,
 handles message deduplication, and processes the data efficiently.
-
-The primary focus for evaluation will be the architectural choices that ensure scalability, resilience, and maintainability.
-
-The service must perform the following functions:
 
 A. TCP Stream Ingestion:
     * Implement a server that listens on a specified TCP port.
@@ -36,8 +32,6 @@ D. Data Processing and Routing:
     * Device Messages (Types: 2, 11, 13): The Payload must be converted into a standardized JSON format representation of a "Device Message" and routed to a Device Message Queue.
     * Device Events (Types: 1, 3, 12, 14): The Payload should be routed directly to a Device Event Queue.
 
-in order to Test your service there is a c# project hare named message sender be running it it should send a few tcp packets to local host on port 5000
-feal free to modify it if needed
-
 the solution should demonstrate a clean, well-structured, and easy to understand.
+
 
